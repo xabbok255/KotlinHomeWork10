@@ -1,3 +1,5 @@
+import posts.Post
+
 object WallService {
     private var posts: Array<Post> = emptyArray()
 
