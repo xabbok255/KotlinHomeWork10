@@ -1,7 +1,9 @@
+import exceptions.PostNotFoundException
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
+import posts.Comment
 import posts.Post
 
 class WallServiceTest {
@@ -40,6 +42,15 @@ class WallServiceTest {
     }
 
     @Test
-    fun clear() {
+    fun createCommentSuccessfully() {
+        WallService.add(Post())
+        val comment: Comment = Comment(text = "test")
+        assertTrue(WallService.createComment(1, comment) === comment)
+    }
+
+    @Test(expected = PostNotFoundException::class)
+    fun createCommentException() {
+        WallService.add(Post())
+        WallService.createComment(100500, Comment())
     }
 }
