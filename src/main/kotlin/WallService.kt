@@ -1,10 +1,20 @@
+import exceptions.PostNotFoundException
+import posts.Comment
 import posts.Post
+import java.lang.Exception
 
 object WallService {
     private var posts: Array<Post> = emptyArray()
+    private var comments: Array<Comment> = emptyArray()
+
+    fun createComment(postId: Int, comment: Comment) : Comment {
+        val post: Post = posts.find { post ->  post.id == postId} ?: throw PostNotFoundException("No post with id $postId")
+        comments += comment
+        return comment
+    }
 
     override fun toString(): String {
-        return posts.contentToString()
+        return "Posts: ${posts.contentToString()} Comments: ${comments.contentToString()}"
     }
 
     fun add(post: Post): Post {
