@@ -8,7 +8,7 @@ object WallService {
     private var comments: Array<Comment> = emptyArray()
 
     fun createComment(postId: Int, comment: Comment) : Comment {
-        val post: Post = posts.find { post ->  post.id == postId} ?: throw PostNotFoundException("No post with id $postId")
+        posts.find { post ->  post.id == postId} ?: throw PostNotFoundException("No post with id $postId")
         comments += comment
         return comment
     }
