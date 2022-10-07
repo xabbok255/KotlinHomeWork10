@@ -28,7 +28,7 @@ object WallService {
     }
 
     override fun toString(): String {
-        return "Posts: ${posts.contentToString()} Comments: ${comments.contentToString()}"
+        return "Posts: ${posts.contentToString()} Comments: ${comments.contentToString()} Reports: ${reports.contentToString()}"
     }
 
     fun add(post: Post): Post {
