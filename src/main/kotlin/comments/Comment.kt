@@ -1,7 +1,6 @@
-package posts
+package comments
 
 import attachments.Attachment
-import attachments.Donut
 
 data class Comment(
     val id: Int = 0,
@@ -19,7 +18,6 @@ data class Comment(
         if (this === other) return true
         if (other !is Comment) return false
 
-        if (id != other.id) return false
         if (fromId != other.fromId) return false
         if (date != other.date) return false
         if (text != other.text) return false
@@ -34,8 +32,7 @@ data class Comment(
     }
 
     override fun hashCode(): Int {
-        var result = id
-        result = 31 * result + fromId
+        var result = fromId
         result = 31 * result + date.hashCode()
         result = 31 * result + text.hashCode()
         result = 31 * result + donut.hashCode()
@@ -46,4 +43,5 @@ data class Comment(
         result = 31 * result + thread.hashCode()
         return result
     }
+
 }
