@@ -32,8 +32,9 @@ object WallService {
     }
 
     fun add(post: Post): Post {
-        posts += post.copy(id = posts.size + 1, date = (System.currentTimeMillis() / 1000).toULong())
-        return posts.last()
+        val postWithModifiedId = post.copy(id = posts.size + 1, date = (System.currentTimeMillis() / 1000).toULong())
+        posts += postWithModifiedId
+            return postWithModifiedId
     }
 
     fun update(post: Post): Boolean {
