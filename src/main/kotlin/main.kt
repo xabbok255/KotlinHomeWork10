@@ -1,9 +1,9 @@
 import attachments.*
+import comments.Comment
 import posts.Comments
 import posts.Likes
 import posts.Post
 import posts.PostType
-import java.util.*
 
 fun main() {
     WallService.add(Post(ownerId = 1, text = "12345"))
@@ -19,6 +19,9 @@ fun main() {
 
     WallService.add(Post(attachments = arrayOf(AudioAttachment(), EventAttachment(), NoteAttachment(), PostedPhotoAttachment(),
     GraffitiAttachment())))
+
+    WallService.createComment(1, Comment())
+    WallService.reportComment(10, 1, 5)
 
     println(WallService)
 }
