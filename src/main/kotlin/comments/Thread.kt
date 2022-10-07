@@ -1,4 +1,4 @@
-package posts
+package comments
 
 data class Thread(
     val count: Int = 0,
