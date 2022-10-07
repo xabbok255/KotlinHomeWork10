@@ -1,16 +1,30 @@
+import comments.Comment
+import exceptions.CommentNotFoundException
 import exceptions.PostNotFoundException
-import posts.Comment
+import exceptions.ReportReasonNotFoundException
 import posts.Post
-import java.lang.Exception
+
+private const val REASON_MAX = 8
 
 object WallService {
     private var posts: Array<Post> = emptyArray()
     private var comments: Array<Comment> = emptyArray()
+    private var reports: Array<Report> = emptyArray()
 
-    fun createComment(postId: Int, comment: Comment) : Comment {
-        posts.find { post ->  post.id == postId} ?: throw PostNotFoundException("No post with id $postId")
-        comments += comment
-        return comment
+    fun createComment(postId: Int, comment: Comment): Comment {
+        posts.find { post -> post.id == postId } ?: throw PostNotFoundException("No post with id $postId")
+        val commentWithFixedId = comment.copy(id = comments.count() + 1)
+        comments += commentWithFixedId
+        return commentWithFixedId
+    }
+
+    fun reportComment(ownerId: Int, commentId: Int, reason: Int): Report {
+        if (reason !in 0..REASON_MAX) throw ReportReasonNotFoundException("Reason $reason must be in range [0..$REASON_MAX]")
+        comments.find { comment -> comment.id == commentId }
+            ?: throw CommentNotFoundException("No comment with id $commentId")
+        val report = Report(ownerId, commentId, reason)
+        reports += report
+        return report
     }
 
     override fun toString(): String {
@@ -35,5 +49,7 @@ object WallService {
 
     fun clear() {
         posts = emptyArray()
+        comments = emptyArray()
+        reports = emptyArray()
     }
 }
