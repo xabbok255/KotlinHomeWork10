@@ -1,3 +1,6 @@
+package services
+
+import Report
 import comments.Comment
 import exceptions.CommentNotFoundException
 import exceptions.PostNotFoundException
