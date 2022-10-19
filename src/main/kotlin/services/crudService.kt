@@ -5,6 +5,10 @@ import Entity
 class Crud<T : Entity<T>> {
     private val list: MutableList<T> = mutableListOf()
 
+    fun filter(predicate: (T) -> Boolean): List<T> {
+        return list.filter(predicate)
+    }
+
     fun count(): Int {
         return list.count()
     }
