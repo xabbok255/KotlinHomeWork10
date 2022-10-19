@@ -1,4 +1,4 @@
-import services.NoteService
+import services.ChatService
 
 fun main() {
     /*services.WallService.add(Post(ownerId = 1, text = "12345"))
@@ -20,7 +20,7 @@ fun main() {
 
     println(services.WallService)*/
 
-    NoteService.add(title = "11111", commentPrivacy = 1, text = "ttttt", privacy = 2)
+    /*NoteService.add(title = "11111", commentPrivacy = 1, text = "ttttt", privacy = 2)
     NoteService.add(title = "22222", commentPrivacy = 2, text = "fffff", privacy = 3)
     NoteService.add(title = "33333", commentPrivacy = 3, text = "ggggg", privacy = 4)
 
@@ -39,8 +39,33 @@ fun main() {
     println(NoteService.getComments(1, sort = 1, offset = 0u, count = 10u))
     println(NoteService.getComments(0, sort = 0, offset = 0u, count = 10u))
 
-
+    */
 
     //println(services.NoteService.getComments(2))
+
+    ChatService.chatToUser(1, 2, "Hello mr 2")
+    ChatService.chatToUser(2, 1, "Nice to meet you 1!")
+    ChatService.chatToUser(1, 2, "How are you ?")
+    ChatService.chatToUser(2, 1, "Fine !")
+
+
+    ChatService.chatToUser(3, 1, "3to1")
+    ChatService.chatToUser(4, 1, "4to1")
+    ChatService.chatToUser(5, 1, "5to1")
+
+    println(ChatService.getUnreadChatsCount(1))
+    println(ChatService.getUnreadChatsCount(2))
+
+    println(ChatService.getChats())
+
+    println(ChatService.getMessagesFromChat(2, 0, 0, 100))
+    println(ChatService.getMessagesFromChat(1, 0, 0, 100))
+    //ChatService.deleteMessage(1, 1)
+    //ChatService.deleteMessage(2, 2)
+    //ChatService.deleteMessage(1, 0)
+    //ChatService.deleteChat(3)
+    //println(ChatService.getMessagesFromChat(1, 0, 0, 100))
+
+    println(ChatService.getChatsByUser(1))
 
 }
