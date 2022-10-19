@@ -179,6 +179,26 @@ class ChatServiceTest {
     }
 
     @Test
+    fun getChatsByUserOperator() {
+        assertEquals(ChatService[1].count(), 0)
+
+        ChatService.chatToUser(1, 2, "1")
+        assertEquals(ChatService[1].count(), 1)
+
+        ChatService.chatToUser(1, 2, "2")
+        assertEquals(ChatService[1].count(), 1)
+
+        ChatService.chatToUser(2, 1, "3")
+        assertEquals(ChatService[1].count(), 1)
+
+        ChatService.chatToUser(1, 30, "30")
+        assertEquals(ChatService[1].count(), 2)
+
+        ChatService.deleteChat(1)
+        assertEquals(ChatService[1].count(), 1)
+    }
+
+    @Test
     fun getMessagesFromChat() {
         ChatService.chatToUser(2, 1, "A")
         ChatService.chatToUser(2, 1, "S")

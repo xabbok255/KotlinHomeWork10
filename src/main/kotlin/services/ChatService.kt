@@ -81,6 +81,14 @@ object ChatService {
     }
 
     /**
+     * Получает список чатов по id пользователя (operator)
+     * @param userId id пользователя
+     */
+    operator fun get(userId: Int) : Collection<Int> {
+        return getChatsByUser(userId)
+    }
+
+    /**
      * Получает список чатов по id пользователя
      * @param userId id пользователя
      */
