@@ -16,8 +16,7 @@ object ChatService {
      * @param userId2 id второго пользователя
      */
     fun getChat(userId1: Int, userId2: Int): Chat? {
-        return chats.filter { ((it.user1 == userId1) && (it.user2 == userId2)) || ((it.user1 == userId2) && (it.user2 == userId1)) }
-            .firstOrNull()
+        return chats.firstOrNull { ((it.user1 == userId1) && (it.user2 == userId2)) || ((it.user1 == userId2) && (it.user2 == userId1)) }
     }
 
     /**
@@ -51,6 +50,7 @@ object ChatService {
      **/
     fun getChatsWithUnreadMessagesByDirection(userId: Int, direction: MessageDirection = MessageDirection.ANY) : Collection<Int> {
         return directMessages
+            .asSequence()
             .filter {
                 ((it.toId == userId) && (direction == MessageDirection.INCOMING))
                         || ((it.fromId == userId) && (direction == MessageDirection.OUTGOING))
@@ -67,10 +67,10 @@ object ChatService {
      */
     fun getChats(): Collection<Int> {
         return directMessages
+            .asSequence()
             .filter { !it.deleted }
             .groupBy { it.chatId }
             .keys
-            .toList()
     }
 
     /** Получает список чатов для пользователя userId, в которых есть непрочитанные ВХОДЯЩИЕ сообщения
@@ -94,11 +94,11 @@ object ChatService {
      */
     fun getChatsByUser(userId: Int): Collection<Int> {
         return directMessages
+            .asSequence()
             .filter { !it.deleted }
             .filter { (it.toId == userId) || (it.fromId == userId) }
             .groupBy { it.chatId }
             .keys
-            .toList()
     }
 
     /**
@@ -110,6 +110,7 @@ object ChatService {
 
     fun getMessagesFromChat(userId: Int, chatId: Int, fromMessageId: Int, count: Int): Collection<DirectMessage> {
         return directMessages
+            .asSequence()
             .filter { !it.deleted }
             .filter { it.chatId == chatId }
             .filter { it.toId == userId }
@@ -125,16 +126,13 @@ object ChatService {
      * @param messageId id сообщения
      */
     fun deleteMessage(userId: Int, messageId: Int) {
-        val chatId: Int = directMessages
-            .filter { it.id == messageId }
-            .firstOrNull()?.chatId ?: throw NoSuchElementException("No chat with messageId $messageId")
+        val chatId: Int = directMessages.firstOrNull { it.id == messageId }?.chatId ?: throw NoSuchElementException("No chat with messageId $messageId")
 
         directMessages
-            .filter { it.fromId == userId }
-            .filter { it.id == messageId }
-            .onEach { directMessages.delete(it.id) }
+            .filter { (it.fromId == userId) && (it.id == messageId)}
+            .onEach { directMessages.delete(it.id); println(it.id)}
 
-        if (directMessages.filter { !it.deleted }.none()) {
+        if (directMessages.none { !it.deleted }) {
             deleteChat(chatId)
         }
     }
@@ -145,8 +143,10 @@ object ChatService {
      */
     fun deleteChat(chatId: Int) {
         directMessages
+            .asSequence()
             .filter { it.chatId == chatId }
             .filter { !it.deleted }
+            .toList()
             .onEach { directMessages.delete(it.id) }
 
         chats.delete(chatId)
