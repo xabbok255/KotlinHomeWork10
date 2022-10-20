@@ -2,12 +2,8 @@ package services
 
 import Entity
 
-class Crud<T : Entity<T>> {
+class Crud<T : Entity<T>> : Iterable<T> {
     private val list: MutableList<T> = mutableListOf()
-
-    fun filter(predicate: (T) -> Boolean): List<T> {
-        return list.filter(predicate)
-    }
 
     fun count(): Int {
         return list.count()
@@ -55,8 +51,6 @@ class Crud<T : Entity<T>> {
         if (getIds.isEmpty()) throw NoSuchElementException("List of Ids is empty")
         getIds.forEach { getById(it) }
 
-        //val sortedGetIds =
-        //    if (sort == 0) getIds.sortedDescending() else getIds.sorted()
         val returnList = list
             .asSequence()
             .filterIndexed { index, entity -> getIds.contains(index) }
@@ -64,7 +58,6 @@ class Crud<T : Entity<T>> {
             .drop(offset.toInt())
             .take(if (count > 0u) count.toInt() else list.count())
             .toList()
-
 
         if (returnList.isEmpty()) throw NoSuchElementException(
             "No items with filter ids [${getIds.joinToString()}] with " +
@@ -77,10 +70,13 @@ class Crud<T : Entity<T>> {
         return list.getOrNull(idToGet) ?: throw NoSuchElementException("No item with id $idToGet")
     }
 
+    override fun iterator(): Iterator<T> {
+        return list.iterator()
+    }
+
     override fun toString(): String {
         return "Crud(list=$list)"
     }
-
 
     fun clear() {
         list.clear()
